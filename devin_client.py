@@ -44,7 +44,7 @@ of the root cause, what you changed, and how you verified it.
     print(f"Created session: {session_id}")
     return session_id
 
-def poll_session(session_id, timeout=900):
+def poll_session(session_id, timeout=2400):
     org_id = os.environ['DEVIN_ORG_ID']
     print(f"Polling session {session_id}...")
     for i in range(timeout // 20):
@@ -54,13 +54,14 @@ def poll_session(session_id, timeout=900):
         )
         data = response.json()
         status = data.get("status", "unknown")
-        print(f"  [{i*20}s] Status: {status}")
+        prs = data.get("pull_requests") or []
+        pr_url = prs[0].get("pr_url") if prs else None
+        print(f"  [{i*20}s] Status: {status} | PR: {pr_url}")
+        if pr_url:
+            data["pr_url"] = pr_url
+            data["status"] = "completed"
+            return data
         if status in ("completed", "failed", "stopped", "finished"):
-            # Pull the real PR URL out of the response if Devin opened one
-            pr_url = None
-            prs = data.get("pull_requests") or []
-            if prs:
-                pr_url = prs[0].get("pr_url")
             data["pr_url"] = pr_url
             return data
         time.sleep(20)
