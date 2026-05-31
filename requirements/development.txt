@@ -589,6 +589,7 @@ oauthlib==3.2.2
 odfpy==1.4.1
     # via
     #   -c requirements/base-constraint.txt
+    #   apache-superset (pyproject.toml)
     #   pandas
 openapi-pydantic==0.5.1
     # via fastmcp
@@ -601,6 +602,7 @@ openapi-spec-validator==0.7.1
 openpyxl==3.1.5
     # via
     #   -c requirements/base-constraint.txt
+    #   apache-superset (pyproject.toml)
     #   pandas
 opentelemetry-api==1.39.1
     # via fastmcp
@@ -849,10 +851,6 @@ pytz==2025.2
     #   flask-babel
     #   pandas
     #   trino
-pyxlsb==1.0.10
-    # via
-    #   -c requirements/base-constraint.txt
-    #   pandas
 pyyaml==6.0.2
     # via
     #   -c requirements/base-constraint.txt
