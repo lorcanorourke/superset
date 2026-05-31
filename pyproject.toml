@@ -272,12 +272,6 @@ disallow_untyped_calls = false
 disallow_untyped_defs = false
 disable_error_code = "annotation-unchecked"
 
-# TODO: remove this once cryptography is fixed, introduced in cryptography 44.0.3
-[[tool.mypy.overrides]]
-module = "cryptography.*"
-ignore_errors = true
-follow_imports = "skip"
-
 # superset-core is installed as editable locally but CI may not expose types
 # This ensures consistent behavior between local dev and CI
 [[tool.mypy.overrides]]
