@@ -1730,3 +1730,38 @@ def test_markdown_with_markup_wrap() -> None:
 
     assert isinstance(result, Markup)
     assert "<strong>bold</strong>" in str(result)
+
+
+def test_parse_ssl_cert_returns_certificate_type() -> None:
+    """Verify that cryptography types are properly resolved (not ignored by mypy)."""
+    from cryptography.x509 import Certificate
+
+    from superset.utils.core import parse_ssl_cert
+
+    ssl_certificate = (
+        "-----BEGIN CERTIFICATE-----\n"
+        "MIIDnDCCAoQCCQCrdpcNPCA/eDANBgkqhkiG9w0BAQsFADCBjzELMAkGA1UEBhMC\n"
+        "VVMxEzARBgNVBAgMCkNhbGlmb3JuaWExEjAQBgNVBAcMCVNhbiBNYXRlbzEPMA0G\n"
+        "A1UECgwGUHJlc2V0MRMwEQYDVQQLDApTa3Vua3dvcmtzMRIwEAYDVQQDDAlwcmVz\n"
+        "ZXQuaW8xHTAbBgkqhkiG9w0BCQEWDmluZm9AcHJlc2V0LmlvMB4XDTIwMDMyNjEw\n"
+        "NTE1NFoXDTQwMDMyNjEwNTE1NFowgY8xCzAJBgNVBAYTAlVTMRMwEQYDVQQIDApD\n"
+        "YWxpZm9ybmlhMRIwEAYDVQQHDAlTYW4gTWF0ZW8xDzANBgNVBAoMBlByZXNldDET\n"
+        "MBEGA1UECwwKU2t1bmt3b3JrczESMBAGA1UEAwwJcHJlc2V0LmlvMR0wGwYJKoZI\n"
+        "hvcNAQkBFg5pbmZvQHByZXNldC5pbzCCASIwDQYJKoZIhvcNAQEBBQADggEPADCC\n"
+        "AQoCggEBAKNHQZcu2L/6HvZfzy4Hnm3POeztfO+NJ7OzppAcNlLbTAatUk1YoDbJ\n"
+        "5m5GUW8m7pVEHb76UL6Xxei9MoMVvHGuXqQeZZnNd+DySW/227wkOPYOCVSuDsWD\n"
+        "1EReG+pv/z8CDhdwmMTkDTZUDr0BUR/yc8qTCPdZoalj2muDl+k2J3LSCkelx4U/\n"
+        "2iYhoUQD+lzFS3k7ohAfaGc2aZOlwTITopXHSFfuZ7j9muBOYtU7NgpnCl6WgxYP\n"
+        "1+4ddBIauPTBY2gWfZC2FeOfYEqfsUUXRsw1ehEQf4uxxTKNJTfTuVbdgrTYx5QQ\n"
+        "jrM88WvWdyVnIM7u7/x9bawfGX/b/F0CAwEAATANBgkqhkiG9w0BAQsFAAOCAQEA\n"
+        "XYLLk3T5RWIagNa3DPrMI+SjRm4PAI/RsijtBV+9hrkCXOQ1mvlo/ORniaiemHvF\n"
+        "Kh6u6MTl014+f6Ytg/tx/OzuK2ffo9x44ZV/yqkbSmKD1pGftYNqCnBCN0uo1Gzb\n"
+        "HZ+bTozo+9raFN7OGPgbdBmpQT2c+LG5n+7REobHFb7VLeY2/7BKtxNBRXfIxn4X\n"
+        "+MIhpASwLH5X64a1f9LyuPNMyUvKgzDe7jRdX1JZ7uw/1T//OHGQth0jLiapa6FZ\n"
+        "GwgYUaruSZH51ZtxrJSXKSNBA7asPSBbyOmGptLsw2GTAsoBd5sUR4+hbuVo+1ai\n"
+        "XeA3AKTX/OdYWJvr5YIgeQ==\n"
+        "-----END CERTIFICATE-----"
+    )
+
+    result = parse_ssl_cert(ssl_certificate)
+    assert isinstance(result, Certificate)
