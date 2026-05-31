@@ -23,13 +23,36 @@ prevent an incompatible resolution.
 
 from __future__ import annotations
 
+import re
 from pathlib import Path
 
-import tomllib
 from packaging.requirements import Requirement
 from packaging.version import Version
 
 ROOT = Path(__file__).resolve().parents[2]
+
+# Matches quoted dependency strings inside pyproject.toml's dependencies array.
+_DEP_RE = re.compile(r'"([^"]+)"')
+
+
+def _parse_dependencies() -> list[str]:
+    """Extract the ``[project] dependencies`` list from pyproject.toml."""
+    text = (ROOT / "pyproject.toml").read_text()
+    # Find the dependencies array
+    match = re.search(r"^dependencies\s*=\s*\[", text, re.MULTILINE)
+    assert match, "Could not locate [project] dependencies in pyproject.toml"
+    start = match.end()
+    # Find closing bracket
+    depth = 1
+    pos = start
+    while depth > 0 and pos < len(text):
+        if text[pos] == "[":
+            depth += 1
+        elif text[pos] == "]":
+            depth -= 1
+        pos += 1
+    block = text[start : pos - 1]
+    return [m.group(1) for m in _DEP_RE.finditer(block)]
 
 
 def _get_requirement(name: str, deps: list[str]) -> Requirement:
@@ -49,11 +72,7 @@ def test_pandas_upper_bound_compatible_with_sqlalchemy_pin() -> None:
     would cause ``AttributeError: 'Engine' object has no attribute 'cursor'``
     at runtime.
     """
-    pyproject = ROOT / "pyproject.toml"
-    with open(pyproject, "rb") as fh:
-        data = tomllib.load(fh)
-
-    deps: list[str] = data["project"]["dependencies"]
+    deps = _parse_dependencies()
 
     pandas_req = _get_requirement("pandas", deps)
     sqla_req = _get_requirement("sqlalchemy", deps)
