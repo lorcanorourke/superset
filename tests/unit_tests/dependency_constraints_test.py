@@ -19,7 +19,6 @@ from __future__ import annotations
 from pathlib import Path
 
 import tomllib
-
 from packaging.requirements import Requirement
 from packaging.version import Version
 
