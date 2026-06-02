@@ -92,8 +92,6 @@ cryptography==46.0.7
     #   apache-superset (pyproject.toml)
     #   paramiko
     #   pyopenssl
-defusedxml==0.7.1
-    # via odfpy
 deprecated==1.2.18
     # via limits
 deprecation==2.1.0
@@ -251,12 +249,10 @@ numpy==1.26.4
     #   bottleneck
     #   numexpr
     #   pandas
-odfpy==1.4.1
-    # via pandas
 openapi-schema-validator==0.6.3
     # via -r requirements/base.in
 openpyxl==3.1.5
-    # via pandas
+    # via apache-superset (pyproject.toml)
 ordered-set==4.1.0
     # via flask-limiter
 outcome==1.3.0.post0
@@ -349,8 +345,6 @@ pytz==2025.2
     #   croniter
     #   flask-babel
     #   pandas
-pyxlsb==1.0.10
-    # via pandas
 pyyaml==6.0.2
     # via
     #   apache-superset (pyproject.toml)
@@ -488,11 +482,7 @@ wtforms==3.2.1
     #   wtforms-json
 wtforms-json==0.3.5
     # via apache-superset (pyproject.toml)
-xlrd==2.0.1
-    # via pandas
 xlsxwriter==3.0.9
-    # via
-    #   apache-superset (pyproject.toml)
-    #   pandas
+    # via apache-superset (pyproject.toml)
 zstandard==0.23.0
     # via flask-compress

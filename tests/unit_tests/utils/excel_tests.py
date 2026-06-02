@@ -16,12 +16,15 @@
 # under the License.
 
 from datetime import datetime, timezone
+from pathlib import Path
 
 import pandas as pd
 from pandas.api.types import is_numeric_dtype
 
 from superset.utils.core import GenericDataType
 from superset.utils.excel import apply_column_types, df_to_excel
+
+REPO_ROOT = Path(__file__).resolve().parents[3]
 
 
 def test_timezone_conversion() -> None:
@@ -129,3 +132,36 @@ def test_column_data_types_with_large_numeric_values():
         "1100108628127863",
         "18014398509481984",
     ]
+
+
+def test_pyxlsb_not_in_declared_dependencies() -> None:
+    """Guard against re-introducing the GPL-licensed pyxlsb package.
+
+    pyxlsb is GPL-licensed and must not be a declared dependency of
+    Superset (Apache-2.0).  It previously entered the tree via
+    ``pandas[excel]``; we pin plain ``pandas`` instead and list only
+    the permissively-licensed Excel I/O libraries we need.
+    """
+    try:
+        import tomllib
+    except ModuleNotFoundError:
+        import tomli as tomllib  # type: ignore[no-redef]
+
+    pyproject = REPO_ROOT / "pyproject.toml"
+    data = tomllib.loads(pyproject.read_text())
+
+    deps = data.get("project", {}).get("dependencies", [])
+    for dep in deps:
+        normalized = dep.lower().replace("-", "_").replace(" ", "")
+        assert "pyxlsb" not in normalized, (
+            f"pyxlsb (GPL) must not be a declared dependency: {dep}"
+        )
+        assert "pandas[excel]" not in dep.lower().replace(" ", ""), (
+            f"pandas[excel] pulls in GPL-licensed pyxlsb: {dep}"
+        )
+
+    override_section = data.get("tool", {}).get("uv", {}).get("override", [])
+    for entry in override_section:
+        assert "pyxlsb" not in str(entry).lower(), (
+            f"pyxlsb (GPL) found in [tool.uv.override]: {entry}"
+        )
