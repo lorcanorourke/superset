@@ -5,6 +5,10 @@ on:
     types: [labeled]
   workflow_dispatch:
 
+concurrency:
+  group: devin-remediation
+  cancel-in-progress: false
+
 jobs:
   remediate:
     if: github.event_name == 'workflow_dispatch' || github.event.label.name == 'devin-task'
