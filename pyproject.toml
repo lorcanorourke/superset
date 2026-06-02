@@ -476,7 +476,6 @@ polyline = "2"
 
 # TODO REMOVE THESE DEPS FROM CODEBASE
 paramiko = "3"  # GPL
-pyxlsb = "1"  # GPL
 
 [tool.uv.sources]
 apache-superset-core = { path = "./superset-core", editable = true }

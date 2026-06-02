@@ -849,10 +849,6 @@ pytz==2025.2
     #   flask-babel
     #   pandas
     #   trino
-pyxlsb==1.0.10
-    # via
-    #   -c requirements/base-constraint.txt
-    #   pandas
 pyyaml==6.0.2
     # via
     #   -c requirements/base-constraint.txt
