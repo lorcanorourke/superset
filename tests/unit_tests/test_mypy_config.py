@@ -15,9 +15,8 @@
 # specific language governing permissions and limitations
 # under the License.
 
+import re
 from pathlib import Path
-
-import tomllib
 
 
 def test_no_cryptography_mypy_override() -> None:
@@ -25,12 +24,11 @@ def test_no_cryptography_mypy_override() -> None:
     cryptography 44.0.3. Since the project now requires cryptography>=46.0.7,
     which ships correct stubs, the override should not be present."""
     pyproject = Path(__file__).resolve().parents[2] / "pyproject.toml"
-    config = tomllib.loads(pyproject.read_text())
-    overrides = config.get("tool", {}).get("mypy", {}).get("overrides", [])
-    cryptography_overrides = [
-        o for o in overrides if o.get("module") == "cryptography.*"
-    ]
-    assert cryptography_overrides == [], (
+    content = pyproject.read_text()
+    pattern = re.compile(
+        r'\[\[tool\.mypy\.overrides\]\]\s*\n\s*module\s*=\s*"cryptography\.\*"'
+    )
+    assert not pattern.search(content), (
         "Found a mypy override for 'cryptography.*' in pyproject.toml. "
         "This override is no longer needed with cryptography>=46.0.7."
     )
