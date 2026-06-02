@@ -349,8 +349,6 @@ pytz==2025.2
     #   croniter
     #   flask-babel
     #   pandas
-pyxlsb==1.0.10
-    # via pandas
 pyyaml==6.0.2
     # via
     #   apache-superset (pyproject.toml)

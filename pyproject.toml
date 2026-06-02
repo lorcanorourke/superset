@@ -76,7 +76,12 @@ dependencies = [
     "packaging",
     # --------------------------
     # pandas and related (wanting pandas[performance] without numba as it's 100+MB and not needed)
-    "pandas[excel]>=2.1.4, <2.4",
+    # pandas[excel] is avoided because it pulls in pyxlsb (GPL-licensed).
+    # Instead, the non-GPL Excel deps are listed explicitly below.
+    "pandas>=2.1.4, <2.4",
+    "odfpy>=1.4.1",
+    "openpyxl>=3.1.5",
+    "xlrd>=2.0.1",
     "bottleneck", # recommended performance dependency for pandas, see https://pandas.pydata.org/docs/getting_started/install.html#performance-dependencies-recommended
     # --------------------------
     "parsedatetime",
@@ -476,7 +481,6 @@ polyline = "2"
 
 # TODO REMOVE THESE DEPS FROM CODEBASE
 paramiko = "3"  # GPL
-pyxlsb = "1"  # GPL
 
 [tool.uv.sources]
 apache-superset-core = { path = "./superset-core", editable = true }
