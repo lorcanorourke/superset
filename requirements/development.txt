@@ -601,7 +601,7 @@ openapi-spec-validator==0.7.1
 openpyxl==3.1.5
     # via
     #   -c requirements/base-constraint.txt
-    #   pandas
+    #   apache-superset (pyproject.toml)
 opentelemetry-api==1.39.1
     # via fastmcp
 ordered-set==4.1.0
@@ -849,10 +849,6 @@ pytz==2025.2
     #   flask-babel
     #   pandas
     #   trino
-pyxlsb==1.0.10
-    # via
-    #   -c requirements/base-constraint.txt
-    #   pandas
 pyyaml==6.0.2
     # via
     #   -c requirements/base-constraint.txt
@@ -1139,7 +1135,7 @@ wtforms-json==0.3.5
 xlrd==2.0.1
     # via
     #   -c requirements/base-constraint.txt
-    #   pandas
+    #   apache-superset (pyproject.toml)
 xlsxwriter==3.0.9
     # via
     #   -c requirements/base-constraint.txt
